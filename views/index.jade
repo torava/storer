@@ -5,5 +5,13 @@ html
 	body
 		a(href="/comments/10") Comment with id 10
 		form(action="/pictures/upload",method="POST",enctype="multipart/form-data")
-			input(type="file",name="picture")
+			input(type="file",name="picture" multiple)
 			input(type="submit")
+		ul
+			#files
+				if !files || !files.length
+					li No pictures
+				else
+					each file, index in files
+						li
+							img(src=file.path,style="max-width:150px;max-height:100px")

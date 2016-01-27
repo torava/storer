@@ -11,10 +11,14 @@ var uploading = multer({
 	onFileUploadComplete: function (file) {
 		console.log(file.fieldname + ' uploaded to  ' + file.path)
 	}
-}).single('picture');
+}).array('picture');
 
 router.post('/upload', uploading, function(req, res, next) {
-	res.status(204).end()
+	console.log(req);
+	res.render('index', {
+		files: req.files || [req.file]
+	});
+	res.status(204).end();
 })
 
 module.exports = router

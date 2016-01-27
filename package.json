@@ -17,6 +17,7 @@
   "author": "Terlici Ltd.",
   "license": "MIT",
   "dependencies": {
+    "blueimp-file-upload": "^9.11.2",
     "body-parser": "^1.12.3",
     "express": "^4.12.3",
     "jade": "^1.9.2",
