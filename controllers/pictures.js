@@ -3,7 +3,7 @@ var express = require('express')
 	, multer = require('multer')
 
 var uploading = multer({
-	dest: __dirname+"\\..\\public\\uploads",
+	dest: __dirname+"/../public/uploads",
 	limits: {fileSize: 10000000},
 	onFileUploadStart: function (file) {
 		console.log(file.originalname + ' is starting ...')
@@ -14,10 +14,8 @@ var uploading = multer({
 }).array('picture');
 
 router.post('/upload', uploading, function(req, res, next) {
-	console.log(req);
-	res.render('index', {
-		files: req.files || [req.file]
-	});
+	var picture = new Picture({ name: req.filename});
+	picture.save();
 	res.status(204).end();
 })
 

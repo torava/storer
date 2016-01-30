@@ -6,7 +6,10 @@ router.use('/users', require('./users'))
 router.use('/pictures', require('./pictures'))
 
 router.get('/', function(req, res) {
-  res.render('index')
+  Picture.find(function(err, pictures) {
+  	if (err) return console.error(err);
+  	res.render('index', pictures);
+  });
 })
 
 module.exports = router
