@@ -47,7 +47,11 @@ html
 					if picture.next
 						a(class="navigation next",href="/picture/"+picture.next.filename)
 							| >
-					div#comments
+					div#pane
+						a(href="/pictures/original/"+picture.filename, target="_blank")
+							| Show original
+						h3
+							| Comments
 						form(action="/comments/send",method="POST")
 							input(type="hidden",name="ref",value=picture.filename)
 							input(type="text",name="bot",style="display:none")

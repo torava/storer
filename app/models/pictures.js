@@ -7,7 +7,7 @@ const commentsSchema = new Schema({
   	date_added: {type: Date, default: Date.now }
 });
 
-var picturesSchema = new Schema({
+const picturesSchema = new Schema({
   	filename: String,
   	date_added: {type: Date, default: Date.now },
   	mimetype: String,

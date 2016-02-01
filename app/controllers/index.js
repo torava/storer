@@ -2,13 +2,12 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const Picture = mongoose.model('Picture');
-const Comment = mongoose.model('Comment');
 
 router.use('/comments', require('./comments'))
-router.use('/users', require('./users'))
 router.use('/pictures', require('./pictures'))
 
 router.get('/picture/:id', function(req, res) {
+	// show all pictures in background and picture by id in modal window
 	Picture.find().sort({date_added: -1}).exec(function(err, pictures) {
 		if (err) return console.error(err);
 		for (i in pictures) {
@@ -29,9 +28,8 @@ router.get('/picture/:id', function(req, res) {
 	});
 })
 
-// tuplatreffit
-
 router.get('/', function(req, res) {
+	// show all pictures
 	Picture.find().sort({date_added: -1}).exec(function(err, pictures) {
 		if (err) return console.error(err);
 		res.render('index', {pictures:pictures, picture: false});
