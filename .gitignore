@@ -1,0 +1,5 @@
+node_modules
+resources/uploads/*
+resources/screen/*
+resources/thumbnails/*
+npm-debug.log

@@ -1,5 +1,13 @@
-# Your starting point for your next great web app
+# Storer
 
-The purpose for this repository is to serve as a base project for your next [Node](http://nodejs.org/) and [Express](http://expressjs.com/) web app. Clone it and you are ready to go.
+A Mongoose-based image upload service
 
-It will provide you with a simple but solid structure on which to build on. We will do our best to keep it up to date with the latest node and express versions.
+## Features
+
+- commenting
+- modal image view
+
+## Todo
+
+- moar AJAX
+- admin/normal users
