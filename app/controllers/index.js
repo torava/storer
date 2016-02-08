@@ -1,9 +1,8 @@
-const express = require('express');
+/*const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const Picture = mongoose.model('Picture');
 
-router.use('/comments', require('./comments'))
 router.use('/pictures', require('./pictures'))
 
 router.get('/picture/:id', function(req, res) {
@@ -36,4 +35,4 @@ router.get('/', function(req, res) {
 	});
 })
 
-module.exports = router
+module.exports = router*/

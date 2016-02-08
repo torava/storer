@@ -53,7 +53,7 @@ h2 {
 	border-top: 1px solid silver;
 	padding: 0.5em;
 }
-#comment-list .comment-date::before {
+#comment-list .comment-details > span+span:before {
 	content: ', ';
 }
 #comment-list .comment-details {

@@ -1,0 +1,18 @@
+<h1>Picture Store</h1>
+<h2>Upload new</h2>
+<form enctype="multipart/form-data" ng-submit="uploadPicture()">
+	<input type="file" model="formData.picture" multiple><br>
+	<input class="btn btn-default" type="submit">
+</form>
+<h2>Pictures</h2>
+<div id="picture-list">
+	<span ng-if="!pictures || !pictures.length">No pictures</span>
+	<ul>
+		<li ng-repeat="picture in pictures">
+			<a href="picture/{{picture.filename}}">
+				<img src="pictures/thumbnail/{{picture.filename}}">
+			</a>
+		</li>
+	</ul>
+</div>
+<div id="picture" ng-include="'partials/picture.html'" ng-if="picture.filename" ng-controller="pictureController"/>
