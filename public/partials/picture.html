@@ -1,20 +1,20 @@
 <img src="pictures/screen/{{picture.filename}}">
-<a class="close" href="/">X</a>
-<a class="navigation previous" ng-if="picture.previous" href="picture/{{picture.previous.filename}}"></a>
-<a class="navigation next" ng-if="picture.next" href="picture/{{picture.next.filename}}"></a>
+<a class="close" ui-sref="main">X</a>
+<a class="navigation previous" ng-if="picture.previous" ui-sref="main.picture({pictureId:picture.previous.filename})"><</a>
+<a class="navigation next" ng-if="picture.next" ui-sref="main.picture({pictureId:picture.next.filename})">></a>
 <div id="pane">
 	<a href="pictures/original/{{picture.filename}}" target="_blank">Show original</a>
 	<h3>Comments</h3>
-	<form ng-submit="addComment(picture.filename)">
-		<input type="text" ng-model="formData.b" style="display:none">
+	<form>
+		<input type="text" ng-model="formData.b" style="display:none"/>
 		<div class="form-group">
-			<input class="form-control" type="text" ng-model="formData.name" placeholder="Name">
+			<input class="form-control" type="text" ng-model="formData.name" placeholder="Name"/>
 		</div>
 		<div class="form-group">
-			<textarea class="form-control" ng-model="formData.message" placeholder="Message"></textarea>
+			<textarea class="form-control" ng-model="formData.message" placeholder="Message" required></textarea>
 		</div>
 		<div class="form-group">
-			<input class="btn.btn-default" type="submit">
+			<input class="btn.btn-default" type="submit" ng-click="addComment(picture.filename)"/>
 		</div>
 	</form>
 	<div id="comment-list">

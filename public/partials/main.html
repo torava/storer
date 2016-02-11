@@ -1,18 +1,31 @@
 <h1>Picture Store</h1>
 <h2>Upload new</h2>
-<form enctype="multipart/form-data" ng-submit="uploadPicture()">
-	<input type="file" model="formData.picture" multiple><br>
-	<input class="btn btn-default" type="submit">
+<form>
+	<input type="file" ng-model="files" ngf-select ngf-drop ngf-accept="'image/*'" ngf-multiple="true"><br>
+	<input class="btn btn-default" type="submit" ng-click="uploadPicture(files)">
 </form>
 <h2>Pictures</h2>
 <div id="picture-list">
 	<span ng-if="!pictures || !pictures.length">No pictures</span>
 	<ul>
+    <li class="sel-file" ng-repeat="f in files | orderBy:'-'">
+      <div>
+        <img ngf-thumbnail="!f.$error && f" title="{{f.name}}">
+		<div class="progress" ng-show="f.progress >= 0" style="width:{{100-f.progress}}%"></div>
+        <div class="button" ng-click="f.upload.abort();f.upload.aborted=true"
+                ng-show="f.upload != null && f.progress < 100 && !f.upload.aborted">
+          X</div>
+      </div>
+    </li>
+    <li class="sel-file" ng-repeat="f in invalidFiles">
+      <div>Invalid File {{f.name}}</div>
+    </li>
+    <ul style="clear:both">
 		<li ng-repeat="picture in pictures">
-			<a href="picture/{{picture.filename}}">
+			<a ui-sref="main.picture({pictureId:picture.filename})">
 				<img src="pictures/thumbnail/{{picture.filename}}">
 			</a>
 		</li>
 	</ul>
 </div>
-<div id="picture" ng-include="'partials/picture.html'" ng-if="picture.filename" ng-controller="pictureController"/>
+<div id="picture" ui-view ui-sref="main.picture" ng-show="picture"/>

@@ -1,10 +1,28 @@
-angular.module('storerController', ['ngRoute'])
-
-.controller('mainController', function($scope, $routeParams, $http, $location, Pictures) {
+angular.module('storerController', ['ui.router'])
+.controller('mainController', function($scope, $stateParams, $http, $location, Pictures) {
 	var sctrl = this;
 
 	$scope.formData = {};
 	$scope.loading = true;
+	$scope.picture = null;
+
+	$scope.$watch('files', function (files) {
+    $scope.formUpload = false;
+    if (files != null) {
+      if (!angular.isArray(files)) {
+        $timeout(function () {
+          $scope.files = files = [files];
+        });
+        return;
+      }
+      for (var i = 0; i < files.length; i++) {
+        $scope.errorMsg = null;
+        (function (f) {
+          $scope.uploadPicture(f);
+        })(files[i]);
+      }
+    }
+  });
 
 	function setLocation(path) {
 		if (history.pushState) {
@@ -17,20 +35,19 @@ angular.module('storerController', ['ngRoute'])
 		$scope.pictures = response.data;
 	})
 
-	$routeParams.pictureId &&
-	Pictures.getPicture($routeParams.pictureId).then(function(response) {
+	$stateParams.pictureId &&
+	Pictures.getPicture($stateParams.pictureId).then(function(response) {
 		$scope.loading = false;
 		$scope.picture = response.data;
-
-		console.log($scope.picture);
 	})
 
-	$scope.uploadPicture = function() {
+	$scope.uploadPicture = function(files) {
 		$scope.loading = true;
-		Pictures.uploadPicture($scope.formData).then(function(response) {
+		Pictures.uploadPicture(files).then(function(response) {
 			$scope.loading = false;
 			$scope.formData = {};
 			$scope.pictures = response.data;
+			$scope.files = null;
 		})
 	}
 
@@ -41,27 +58,11 @@ angular.module('storerController', ['ngRoute'])
 			$scope.pictures = data;
 		})
 	}
-})
-.controller('pictureController', function($scope, $routeParams, $http, $location, Pictures) {
-	var sctrl = this;
-
-	$scope.formData = {};
-	$scope.loading = true;
-
-	function setLocation(path) {
-		if (history.pushState) {
-			$location.path(path);
-		}
-	}
-
-	$routeParams.pictureId &&
-	Pictures.getPicture($routeParams.pictureId).then(function(response) {
-		$scope.loading = false;
-		$scope.picture = response.data;
-	})
 
 	$scope.addComment = function(id) {
 		$scope.loading = true;
+		console.log('hmm');
+
 		Pictures.addComment(id, $scope.formData).then(function(response) {
 			$scope.loading = false;
 			$scope.formData = {};
@@ -69,3 +70,18 @@ angular.module('storerController', ['ngRoute'])
 		})
 	}
 })
+.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
+	$stateProvider
+	.state('main', {
+		url: '/',
+		templateUrl: 'partials/main.html',
+		controller: 'mainController'
+	})
+	.state('main.picture', {
+		url: 'picture/:pictureId',
+		templateUrl: 'partials/picture.html',
+		controller: 'mainController'
+	})
+	$urlRouterProvider.otherwise('/');
+	$locationProvider.html5Mode(true);
+});

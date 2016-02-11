@@ -18,8 +18,8 @@ function getPictures(res) {
 
 function getPicture(res, id) {
 	// show all pictures in background and picture by id in modal window
-	var picture;
-	Picture.find(function(err, pictures) {
+	Picture.find().sort({date_added: -1}).lean().exec(function(err, pictures) {
+		var picture;
 		if (err) res.send(err);
 
 		for (i in pictures) {
@@ -43,50 +43,74 @@ function getPicture(res, id) {
 
 function getPictureFile(res, id, path) {
 	Picture.findOne({filename: id}, function(err, picture) {
-		if (err) console.error(err);
-		if (!picture) return; // 404
-		res.setHeader('Content-Type', picture.mimetype);
-		fs.createReadStream(__dirname+'/../resources/'+path+'/'+picture.filename).pipe(res);
+		if (err) {
+			console.error(err);
+			res.sendStatus(404);
+		}
+		if (!picture) {
+			res.sendStatus(404);
+			return;
+		}
+		var file_path = __dirname+'/../resources/'+path+'/'+picture.filename;
+		fs.access(file_path, fs.R_OK, function(err) {
+			if (err) {
+				console.error(err);
+				res.sendStatus(404);
+				return;
+			}
+			res.setHeader('Content-Type', picture.mimetype);
+			fs.createReadStream(file_path).pipe(res);
+		});
 	});
 }
 
 module.exports = function(app) {
 
-var uploading = multer({
-	dest: __dirname+"/../../resources/uploads",
+var upload = multer({
+	dest: __dirname+"/../resources/uploads",
 	limits: {fileSize: 10000000},
-}).array('picture');
+}).array('files');
 
 app.get('/api/pictures', function (req, res) {
 	getPictures(res);
 });
 
-app.post('/api/pictures', uploading, function(req, res, next) {
+app.post('/api/pictures', function(req, res) {
+	upload(req, res, function(err) {
+
+	if (err) {
+		console.error(err);
+		res.send(err);
+		return;
+	}
+
 	var picture, file;
 	// upload files and make screen and thumbnail versions
 	for (i in req.files) {
 		file = req.files[i];
 		picture = new Picture({ filename: file.filename, original_name: file.original_name, mimetype: file.mimetype });
-		sharp(req.files[i].path)
+		sharp(file.path)
 		.resize(150, 150)
 		.rotate()
 		.toFormat('jpeg')
 		.quality(70)
-		.toFile(__dirname+'/../../resources/thumbnails/'+req.files[i].filename, function(err) {
-			console.log(err);
+		.toFile(__dirname+'/../resources/thumbnails/'+file.filename, function(err) {
+			if (err) console.error(err);
 		});
-		sharp(req.files[i].path)
+		sharp(file.path)
 		.resize(1920, 1080)
 		.rotate()
 		.max()
 		.toFormat('jpeg')
-		.toFile(__dirname+'/../../resources/screen/'+req.files[i].filename, function(err) {
-			console.log(err);
+		.toFile(__dirname+'/../resources/screen/'+file.filename, function(err) {
+			if (err) console.error(err);
 		});
 		picture.save();
 	}
 
-	res.json(pictures);
+	getPictures(res);
+
+	})
 });
 
 app.post('/api/pictures/comment', function(req, res, next) {

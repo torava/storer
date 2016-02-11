@@ -2,7 +2,7 @@ const fs = require('fs');
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3000;
 
 const mongoose = require('mongoose');
 const models = __dirname+'/app/models';
