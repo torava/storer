@@ -7,7 +7,8 @@ angular.module('storerController', ['ui.router', 'blueimp.fileupload'])
 
 	$rootScope.$on('$stateChangeStart',
     function(event, toState, toParams, fromState, fromParams){
-        $rootScope.isPictureShown = toState.name === 'main.picture'
+        $rootScope.isPictureShown = toState.name === 'main.picture';
+        $rootScope.hideComments = $scope.hideComments;
     })
 
 	$scope.upload_options = {url:'/api/pictures', previewCrop: true, previewMaxWidth:150, previewMaxHeight:150, singleFileUploads:false};

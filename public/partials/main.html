@@ -45,13 +45,14 @@
 	</div>
 </form>
 <div id="picture" ui-view ng-show="picture">
-	<div id="picture-pane">
+	<div id="picture-panel" class="{{hideComments?'full':''}}">
 		<img src="pictures/screen/{{picture.filename}}">
 		<a class="close" ui-sref="main">X</a>
 		<a class="navigation previous" ng-if="picture.previous" ui-sref="main.picture({pictureId:picture.previous.filename})"><</a>
 		<a class="navigation next" ng-if="picture.next" ui-sref="main.picture({pictureId:picture.next.filename})">></a>
 	</div>
-	<div id="side-pane">
+	<div id="side-panel" class="{{hideComments?'hidden':''}}">
+		<div class="toggle" ng-click="hideComments=!hideComments">{{hideComments?'&laquo;':'&raquo;'}}</div>
 		<a href="pictures/original/{{picture.filename}}" target="_blank">Show original</a>
 		<h3>Comments</h3>
 		<form>

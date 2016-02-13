@@ -8,8 +8,10 @@ angular.module('storerApp', ['storerController', 'storerService'])
 	})
 	.state('main.picture', {
 		url: 'picture/:pictureId',
-
-		controller: 'mainController'
+		controller: 'mainController',
+		params: function($scope) {
+			console.log($scope);
+		}
 	})
 	$urlRouterProvider.otherwise('/');
 	$locationProvider.html5Mode(true);
@@ -19,7 +21,6 @@ angular.module('storerApp', ['storerController', 'storerService'])
 
 $(function() {	
 	$(document).keydown(function(e) {
-		console.log(e);
 		if (e.which == 37) {
 			$('.navigation.previous').click()
 		}

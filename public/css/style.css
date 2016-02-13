@@ -57,22 +57,75 @@ h2 {
 	background-color: rgba(0,0,0,0.8);
 	overflow: hidden;
 }
-#picture-pane {
+#picture-panel {
+	float: left;
+	width: 80%;
+	height: 100%;
+	position: relative;
+}
+#picture-panel.full {
+	width: 100%;
+}
+#picture-panel img {
 	position: absolute;
 	margin: auto;
 	top: 0; right: 0; bottom: 0; left: 0;
-	overflow: hidden;
-}
-#picture-pane img {
 	max-width: 100%;
 	max-height: 100%;
 }
-#side-pane {
-	width: 20%;
-	padding: 0.5em;
+#picture-panel .close {
 	position: absolute;
-	top: 0; right: 0; bottom: 0;
+	top: 1%;
+	right: 1%;
+	font-size: 4em;
+	color: #aaa;
+	text-decoration: none;
+}
+#picture-panel .navigation {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	width: 7%;
+	font-size: 5em;
+	color: #aaa;
+	text-decoration: none;
+	margin: auto;
+	height: 1em;
+	text-align: center;
+}
+#picture-panel .navigation.next {
+	right: 1%;
+}
+#picture-panel .navigation.previous {
+	left: 0;
+}
+/* picture VIEW - side panel */
+#side-panel {
+	width: 20%;
+	height: 100%;
+	padding: 1%;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
 	background-color: white;
+}
+#side-panel.hidden {
+	display: block!important;
+	right: -20%;
+}
+#side-panel .toggle {
+    position: absolute;
+    left: -1em;
+    bottom: 1%;
+    background-color: rgba(255,255,255,0.3);
+    font-size: 2em;
+    padding: 0.25em 0.25em 1.25em 0.25em;
+    line-height: 1em;
+    height: 1em;
+    width: 1em;
+}
+#comment-list {
 	overflow: auto;
 }
 #comment-list ul {
@@ -89,30 +142,4 @@ h2 {
 }
 #comment-list .comment-details {
 	color: gray;
-}
-#picture .close {
-	position: absolute;
-	top: 1%;
-	right: 21%;
-	font-size: 4em;
-	color: #aaa;
-	text-decoration: none;
-}
-#picture .navigation {
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	width: 5%;
-	font-size: 4em;
-	color: #aaa;
-	text-decoration: none;
-	margin: auto;
-	height: 1em;
-	text-align: center;
-}
-#picture .navigation.next {
-	right: 20%;
-}
-#picture .navigation.previous {
-	left: 0;
 }
