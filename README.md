@@ -1,6 +1,6 @@
 # Storer
 
-A Mongoose-based image upload service. The structure is loosely based on https://github.com/terlici/base-express.
+A Mongoose-based image upload service.
 
 ## Features
 
@@ -9,11 +9,6 @@ A Mongoose-based image upload service. The structure is loosely based on https:/
 - modal image view
 - MVC architecture
 - image resizing
-
-## Todo
-
-- carousel
-- admin/normal users
 
 ## Dependencies
 
