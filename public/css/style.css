@@ -126,7 +126,15 @@ h2 {
     height: 1em;
     width: 1em;
 }
+#side-panel .panel-header {
+	height: 18em;
+}
 #comment-list {
+	position: absolute;
+	top: 18em;
+	bottom: 0;
+	left: 0;
+	right: 0;
 	overflow: auto;
 }
 #comment-list ul {

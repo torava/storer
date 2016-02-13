@@ -52,21 +52,23 @@
 		<a class="navigation next" ng-if="picture.next" ui-sref="main.picture({pictureId:picture.next.filename})">></a>
 	</div>
 	<div id="side-panel" class="{{hideComments?'hidden':''}}">
-		<div class="toggle" ng-click="hideComments=!hideComments">{{hideComments?'&laquo;':'&raquo;'}}</div>
-		<a href="pictures/original/{{picture.filename}}" target="_blank">Show original</a>
-		<h3>Comments</h3>
-		<form>
-			<input type="text" ng-model="formData.b" style="display:none"/>
-			<div class="form-group">
-				<input class="form-control" type="text" ng-model="formData.name" placeholder="Name"/>
-			</div>
-			<div class="form-group">
-				<textarea class="form-control" ng-model="formData.message" placeholder="Message" required></textarea>
-			</div>
-			<div class="form-group">
-				<input class="btn.btn-default" type="submit" value="Submit" ng-click="addComment(picture.filename)"/>
-			</div>
-		</form>
+		<div class="panel-header">
+			<div class="toggle" ng-click="hideComments=!hideComments">{{hideComments?'&laquo;':'&raquo;'}}</div>
+			<a href="pictures/original/{{picture.filename}}" target="_blank">Show original</a>
+			<h3>Comments</h3>
+			<form>
+				<input type="text" ng-model="formData.b" style="display:none"/>
+				<div class="form-group">
+					<input class="form-control" type="text" ng-model="formData.name" placeholder="Name"/>
+				</div>
+				<div class="form-group">
+					<textarea class="form-control" ng-model="formData.message" placeholder="Message" required></textarea>
+				</div>
+				<div class="form-group">
+					<input class="btn.btn-default" type="submit" value="Add comment" ng-click="addComment(picture.filename)"/>
+				</div>
+			</form>
+		</div>
 		<div id="comment-list">
 			<span ng-if="!picture.comments || !picture.comments.length">No comments</span>
 			<ul>
