@@ -60,7 +60,7 @@ h2 {
 #picture-panel {
 	position: absolute;
 	top: 0;
-	right: 20em;
+	right: 17em;
 	bottom: 0;
 	left: 0;
 }
@@ -102,9 +102,9 @@ h2 {
 }
 /* picture VIEW - side panel */
 #side-panel {
-	width: 250px;
+	width: 17em;
 	height: 100%;
-	padding: 1%;
+	padding: 0.5em;
 	position: absolute;
 	top: 0;
 	right: 0;
@@ -113,12 +113,12 @@ h2 {
 }
 #side-panel.hidden {
 	display: block!important;
-	right: -250px;
+	right: -17em;
 }
 #side-panel .toggle {
     position: absolute;
     left: -1em;
-    bottom: 1%;
+    bottom: 5%;
     background-color: rgba(255,255,255,0.3);
     font-size: 2em;
     padding: 0.25em 0.25em 1.25em 0.25em;
@@ -131,6 +131,7 @@ h2 {
 }
 #comment-list {
 	position: absolute;
+	padding: 0.5em;
 	top: 18em;
 	bottom: 0;
 	left: 0;
