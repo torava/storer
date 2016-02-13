@@ -7,13 +7,17 @@
 
 <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.18/angular-ui-router.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.18/angular-ui-router.js"></script>
 <!-- angular localization -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-i18n/1.5.0/angular-locale_fi-fi.min.js"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/11.2.3/ng-file-upload-shim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/11.2.3/ng-file-upload.min.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.5.7/jquery.fileupload.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.5.7/jquery.fileupload-angular.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.5.7/jquery.fileupload-process.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-load-image/2.1.0/load-image.all.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.5.7/jquery.fileupload-image.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.5.7/jquery.fileupload-validate.min.js"></script>
 <script src="js/controller.js"></script>
 <script src="js/service.js"></script>
 <script src="js/core.js"></script>
@@ -27,7 +31,7 @@
 
 <link href="css/style.css" rel="stylesheet" type="text/css">
 </head>
-<body>
+<body style="{{isPictureShown?'overflow:hidden':''}}">
 <div id="wrapper" ui-view ng-controller="mainController">
 
 </div>

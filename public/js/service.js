@@ -1,6 +1,6 @@
-angular.module('storerService', ['ngFileUpload'])
+angular.module('storerService', [])
 
-.factory('Pictures', function($http, $timeout, Upload) {
+.factory('Pictures', function($http, $timeout) {
 	return {
 		get: function() {
 			return $http.get('/api/pictures');
@@ -8,7 +8,7 @@ angular.module('storerService', ['ngFileUpload'])
 		getPicture: function(id) {
 			return $http.get('/api/picture/'+id);
 		},
-		uploadPicture: function(file) {
+		/*uploadPicture: function(file) {
 			file.upload = Upload.upload({
 				url: '/api/pictures',
 				arrayKey: '', // from http://stackoverflow.com/questions/32917617/multer-not-accepting-files-in-array-format-gives-unexpected-filed-error
@@ -36,7 +36,7 @@ angular.module('storerService', ['ngFileUpload'])
 		    });
 
 		    return file.upload;
-		},
+		},*/
 		addComment: function(id, data) {
 			data.id = id;
 			return $http.post('/api/pictures/comment', data);

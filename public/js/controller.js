@@ -1,34 +1,16 @@
-angular.module('storerController', ['ui.router'])
-.controller('mainController', function($scope, $stateParams, $http, $location, Pictures) {
+angular.module('storerController', ['ui.router', 'blueimp.fileupload'])
+.run(['$location', '$rootElement', function ($location, $rootElement) {
+      $rootElement.off('click');
+}])
+.controller('mainController', function($scope, $rootScope, $stateParams, $http, $location, Pictures) {
 	var sctrl = this;
 
-	$scope.formData = {};
-	$scope.loading = true;
-	$scope.picture = null;
+	$rootScope.$on('$stateChangeStart',
+    function(event, toState, toParams, fromState, fromParams){
+        $rootScope.isPictureShown = toState.name === 'main.picture'
+    })
 
-	$scope.$watch('files', function (files) {
-    $scope.formUpload = false;
-    if (files != null) {
-      if (!angular.isArray(files)) {
-        $timeout(function () {
-          $scope.files = files = [files];
-        });
-        return;
-      }
-      for (var i = 0; i < files.length; i++) {
-        $scope.errorMsg = null;
-        (function (f) {
-          $scope.uploadPicture(f);
-        })(files[i]);
-      }
-    }
-  });
-
-	function setLocation(path) {
-		if (history.pushState) {
-			$location.path(path);
-		}
-	}
+	$scope.upload_options = {url:'/api/pictures', previewCrop: true, previewMaxWidth:150, previewMaxHeight:150, singleFileUploads:false};
 
 	Pictures.get().then(function(response) {
 		$scope.loading = false;
@@ -41,16 +23,6 @@ angular.module('storerController', ['ui.router'])
 		$scope.picture = response.data;
 	})
 
-	$scope.uploadPicture = function(files) {
-		$scope.loading = true;
-		Pictures.uploadPicture(files).then(function(response) {
-			$scope.loading = false;
-			$scope.formData = {};
-			$scope.pictures = response.data;
-			$scope.files = null;
-		})
-	}
-
 	$scope.deletePicture = function(id) {
 		$scope.loading = true;
 		Pictures.deletePicture(id).then(function(response) {
@@ -61,7 +33,6 @@ angular.module('storerController', ['ui.router'])
 
 	$scope.addComment = function(id) {
 		$scope.loading = true;
-		console.log('hmm');
 
 		Pictures.addComment(id, $scope.formData).then(function(response) {
 			$scope.loading = false;
@@ -70,18 +41,3 @@ angular.module('storerController', ['ui.router'])
 		})
 	}
 })
-.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
-	$stateProvider
-	.state('main', {
-		url: '/',
-		templateUrl: 'partials/main.html',
-		controller: 'mainController'
-	})
-	.state('main.picture', {
-		url: 'picture/:pictureId',
-		templateUrl: 'partials/picture.html',
-		controller: 'mainController'
-	})
-	$urlRouterProvider.otherwise('/');
-	$locationProvider.html5Mode(true);
-});

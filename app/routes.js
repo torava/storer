@@ -9,6 +9,7 @@ const sharp = require('sharp');
 const http = require('http');
 
 function getPictures(res) {
+	// get all pictures in descending date order
 	Picture.find().sort({date_added: -1}).exec(function(err, pictures) {
 		if (err) res.send(err);
 
@@ -17,7 +18,9 @@ function getPictures(res) {
 }
 
 function getPicture(res, id) {
-	// show all pictures in background and picture by id in modal window
+	// get all pictures
+	// sort by date for getting next and previous picture
+	// lean() is needed to modify picture array
 	Picture.find().sort({date_added: -1}).lean().exec(function(err, pictures) {
 		var picture;
 		if (err) res.send(err);
@@ -25,7 +28,9 @@ function getPicture(res, id) {
 		for (i in pictures) {
 			i = parseInt(i);
 			if (pictures[i].filename === id) {
+				// set current picture
 				picture = pictures[i];
+
 				if (pictures.length > 1) {
 					if (i > 0) picture.previous = pictures[i-1];
 					else picture.previous = pictures[pictures.length-1];
@@ -68,7 +73,7 @@ module.exports = function(app) {
 
 var upload = multer({
 	dest: __dirname+"/../resources/uploads",
-	limits: {fileSize: 10000000},
+	limits: {fileSize: 10000000}
 }).array('files');
 
 app.get('/api/pictures', function (req, res) {
@@ -88,15 +93,19 @@ app.post('/api/pictures', function(req, res) {
 	// upload files and make screen and thumbnail versions
 	for (i in req.files) {
 		file = req.files[i];
+
 		picture = new Picture({ filename: file.filename, original_name: file.original_name, mimetype: file.mimetype });
+		picture.save();
+
 		sharp(file.path)
 		.resize(150, 150)
 		.rotate()
 		.toFormat('jpeg')
-		.quality(70)
+		.quality(80)
 		.toFile(__dirname+'/../resources/thumbnails/'+file.filename, function(err) {
 			if (err) console.error(err);
 		});
+
 		sharp(file.path)
 		.resize(1920, 1080)
 		.rotate()
@@ -105,7 +114,6 @@ app.post('/api/pictures', function(req, res) {
 		.toFile(__dirname+'/../resources/screen/'+file.filename, function(err) {
 			if (err) console.error(err);
 		});
-		picture.save();
 	}
 
 	getPictures(res);

@@ -1,31 +1,82 @@
 <h1>Picture Store</h1>
-<h2>Upload new</h2>
-<form>
-	<input type="file" ng-model="files" ngf-select ngf-drop ngf-accept="'image/*'" ngf-multiple="true"><br>
-	<input class="btn btn-default" type="submit" ng-click="uploadPicture(files)">
+<h2>Upload New</h2>
+<!-- The file upload form used as target for the file upload widget -->
+<form data-file-upload="upload_options" data-ng-class="{'fileupload-processing': processing() || loadingFiles}">
+	<!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
+	<div class="row fileupload-buttonbar">
+			<div class="col-lg-7">
+					<!-- The fileinput-button span is used to style the file input field as button -->
+					<span class="btn btn-success fileinput-button">
+							<i class="glyphicon glyphicon-plus"></i>
+							<span>Add files...</span>
+							<input type="file" name="files" multiple>
+					</span>
+					<button type="button" class="btn btn-primary start" data-ng-click="submit()">
+							<i class="glyphicon glyphicon-upload"></i>
+							<span>Start upload</span>
+					</button>
+					<button type="button" class="btn btn-warning cancel" data-ng-click="cancel()">
+							<i class="glyphicon glyphicon-ban-circle"></i>
+							<span>Cancel upload</span>
+					</button>
+			</div>
+	</div>
+	<h2>All Pictures</h2>
+	<div id="picture-list">
+		<span ng-if="!pictures || !pictures.length">No pictures</span>
+		<div>
+			<div data-ng-repeat="file in queue | orderBy:'-'" data-ng-class="{'processing': file.$processing()}">
+			<div data-ng-switch data-on="!!file.thumbnailUrl">
+					<div class="preview" data-ng-switch-when="true">
+							<a data-ng-href="{{file.url}}" title="{{file.name}}" download="{{file.name}}" data-gallery><img data-ng-src="{{file.thumbnailUrl}}" alt=""></a>
+					</div>
+					<div class="preview" data-ng-switch-default data-file-upload-preview="file"></div>
+			</div>
+			<strong data-ng-show="file.error" class="error text-danger">{{file.error}}</strong>
+			<div class="progress-bar" data-file-upload-progress="file.$progress()" data-ng-style="{width: (100-num) + '%'}"></div>
+			<div class="btn btn-danger destroy" data-ng-click="file.$destroy()" data-ng-hide="!file.$destroy"><i class="glyphicon glyphicon-trash"></i></div>
+			</div>
+			<div ng-repeat="picture in pictures">
+				<a ui-sref="main.picture({pictureId:picture.filename})">
+					<img src="pictures/thumbnail/{{picture.filename}}">
+				</a>
+			</div>
+		</div>
+	</div>
 </form>
-<h2>Pictures</h2>
-<div id="picture-list">
-	<span ng-if="!pictures || !pictures.length">No pictures</span>
-	<ul>
-    <li class="sel-file" ng-repeat="f in files | orderBy:'-'">
-      <div>
-        <img ngf-thumbnail="!f.$error && f" title="{{f.name}}">
-		<div class="progress" ng-show="f.progress >= 0" style="width:{{100-f.progress}}%"></div>
-        <div class="button" ng-click="f.upload.abort();f.upload.aborted=true"
-                ng-show="f.upload != null && f.progress < 100 && !f.upload.aborted">
-          X</div>
-      </div>
-    </li>
-    <li class="sel-file" ng-repeat="f in invalidFiles">
-      <div>Invalid File {{f.name}}</div>
-    </li>
-    <ul style="clear:both">
-		<li ng-repeat="picture in pictures">
-			<a ui-sref="main.picture({pictureId:picture.filename})">
-				<img src="pictures/thumbnail/{{picture.filename}}">
-			</a>
-		</li>
-	</ul>
+<div id="picture" ui-view ng-show="picture">
+	<div id="picture-pane">
+		<img src="pictures/screen/{{picture.filename}}">
+		<a class="close" ui-sref="main">X</a>
+		<a class="navigation previous" ng-if="picture.previous" ui-sref="main.picture({pictureId:picture.previous.filename})"><</a>
+		<a class="navigation next" ng-if="picture.next" ui-sref="main.picture({pictureId:picture.next.filename})">></a>
+	</div>
+	<div id="side-pane">
+		<a href="pictures/original/{{picture.filename}}" target="_blank">Show original</a>
+		<h3>Comments</h3>
+		<form>
+			<input type="text" ng-model="formData.b" style="display:none"/>
+			<div class="form-group">
+				<input class="form-control" type="text" ng-model="formData.name" placeholder="Name"/>
+			</div>
+			<div class="form-group">
+				<textarea class="form-control" ng-model="formData.message" placeholder="Message" required></textarea>
+			</div>
+			<div class="form-group">
+				<input class="btn.btn-default" type="submit" ng-click="addComment(picture.filename)"/>
+			</div>
+		</form>
+		<div id="comment-list">
+			<span ng-if="!picture.comments || !picture.comments.length">No comments</span>
+			<ul>
+				<li ng-repeat="comment in picture.comments">
+					<p class="comment-details">
+						<span class="comment-name">{{comment.name ? comment.name : 'Unknown'}}</span><span
+							  class="comment-date">{{comment.date_added | date : 'short'}}</span>
+					</p>
+					<p class="comment-message">{{comment.message}}</p>
+				</li>
+			</ul>
+		</div>
+	</div>
 </div>
-<div id="picture" ui-view ui-sref="main.picture" ng-show="picture"/>

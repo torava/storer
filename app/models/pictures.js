@@ -17,7 +17,7 @@ const picturesSchema = new Schema({
 
 picturesSchema.methods = {
 	addComment: function(body) {
-		this.comments.push({
+		this.comments.unshift({
 			message: body.message,
 			name: body.name
 		});

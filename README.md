@@ -5,21 +5,21 @@ A Mongoose-based image upload service. The structure is loosely based on https:/
 ## Features
 
 - commenting
+- uploading with progress information
 - modal image view
 - MVC architecture
 - image resizing
 
 ## Todo
 
-- moar AJAX
-- upload progress monitoring
+- carousel
 - admin/normal users
 
-# Dependencies
+## Dependencies
 
 - Mongoose
 - Multer
 - Sharp
-- Jade
-- Express, fs & body-parser
-- Bootstrap
+- Angular.js, ui-router, blueimp-file-upload
+- Express, fs, body-parser
+- jQuery, Bootstrap
