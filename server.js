@@ -2,7 +2,10 @@ const fs = require('fs');
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-const port = process.env.PORT || 3000;
+
+const config = require(__dirname+'/app/config');
+
+const port = config.port;
 
 const mongoose = require('mongoose');
 const models = __dirname+'/app/models';
@@ -54,7 +57,7 @@ function connect() {
 		user: 'user',
 		pass: 'password'
 	};
-	return mongoose.connect('mongodb://localhost:27017/storer', options).connection;
+	return mongoose.connect(config.db, options).connection;
 }
 
 function listen() {
